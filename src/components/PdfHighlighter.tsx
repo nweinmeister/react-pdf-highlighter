@@ -579,8 +579,8 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                 }
 
                 const pageBoundingRect = {
-                  left: Math.min(containerCoords.x, containerCoords.x),
-                  top: Math.min(containerCoords.y, containerCoords.y),
+                  left: Math.min(containerCoords.x, containerCoords.x) - page.node.offsetLeft,
+                  top: Math.min(containerCoords.y, containerCoords.y) - page.node.offsetTop,
                   width: Math.abs(containerCoords.x - containerCoords.x),
                   height: Math.abs(containerCoords.y - containerCoords.y),
                   pageNumber: page.number,

@@ -1,6 +1,6 @@
 {
   "name": "offer-pdf-highlighter",
-  "version": "8.0.2-rc.0",
+  "version": "8.0.3-rc.0",
   "description": "Set of React components for PDF annotation",
   "author": "Nik Weinmeister <nik.weinmeister@gmail.com>",
   "license": "MIT",
