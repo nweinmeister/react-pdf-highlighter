@@ -16,6 +16,10 @@ interface Props {
   ) => void;
   onDragStart: () => void;
   onDragEnd: () => void;
+  onClick?: (
+    startTarget: HTMLElement,
+    containerCoords: Coords
+  ) => void;
   shouldStart: (event: MouseEvent) => boolean;
   onChange: (isVisible: boolean) => void;
 }
@@ -36,6 +40,7 @@ export function MouseSelection({
   onDragEnd,
   shouldStart,
   onChange,
+  onClick
 }: Props) {
   const [locked, setLocked] = useState(false);
   const [start, setStart] = useState<Coords | null>(null);
@@ -105,6 +110,7 @@ export function MouseSelection({
         return;
       }
 
+      if(onClick) onClick(startTarget, containerCoords(event.pageX, event.pageY));
       onDragStart();
       setStart(containerCoords(event.pageX, event.pageY));
       setEnd(null);

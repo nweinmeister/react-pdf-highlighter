@@ -77,6 +77,7 @@ interface Props<T_HT> {
   ) => JSX.Element | null;
   enableAreaSelection: (event: MouseEvent) => boolean;
   pdfViewerOptions?: PDFViewerOptions;
+  onClick?: (position: ScaledPosition) => void;
 }
 
 const EMPTY_ID = "empty-id";
@@ -555,7 +556,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   debouncedScaleValue: () => void = debounce(this.handleScaleValue, 500);
 
   render() {
-    const { onSelectionFinished, enableAreaSelection } = this.props;
+    const { onSelectionFinished, enableAreaSelection, onClick } = this.props;
 
     return (
       <div onPointerDown={this.onMouseDown}>
@@ -570,6 +571,32 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
             <MouseSelection
               onDragStart={() => this.toggleTextSelection(true)}
               onDragEnd={() => this.toggleTextSelection(false)}
+              onClick={(startTarget, containerCoords) => {
+                const page = getPageFromElement(startTarget);
+
+                if (!page) {
+                  return;
+                }
+
+                const pageBoundingRect = {
+                  left: Math.min(containerCoords.x, containerCoords.x),
+                  top: Math.min(containerCoords.y, containerCoords.y),
+                  width: Math.abs(containerCoords.x - containerCoords.x),
+                  height: Math.abs(containerCoords.y - containerCoords.y),
+                  pageNumber: page.number,
+                };
+
+                const viewportPosition = {
+                  boundingRect: pageBoundingRect,
+                  rects: [],
+                  pageNumber: page.number,
+                };
+
+                const scaledPosition =
+                  this.viewportPositionToScaled(viewportPosition);
+
+                if(onClick) onClick(scaledPosition)
+              }}
               onChange={(isVisible) =>
                 this.setState({ isAreaSelectionInProgress: isVisible })
               }
