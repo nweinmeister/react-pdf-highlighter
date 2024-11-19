@@ -77,7 +77,7 @@ interface Props<T_HT> {
   ) => JSX.Element | null;
   enableAreaSelection: (event: MouseEvent) => boolean;
   pdfViewerOptions?: PDFViewerOptions;
-  onClick?: (position: ScaledPosition) => void;
+  onClick?: ( target: HTMLElement, position: ScaledPosition) => void;
 }
 
 const EMPTY_ID = "empty-id";
@@ -595,7 +595,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                 const scaledPosition =
                   this.viewportPositionToScaled(viewportPosition);
 
-                if(onClick) onClick(scaledPosition)
+                if(onClick) onClick(startTarget, scaledPosition)
               }}
               onChange={(isVisible) =>
                 this.setState({ isAreaSelectionInProgress: isVisible })

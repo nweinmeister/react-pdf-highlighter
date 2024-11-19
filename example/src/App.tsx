@@ -144,6 +144,7 @@ export function App() {
         <PdfLoader url={url} beforeLoad={<Spinner />}>
           {(pdfDocument) => (
             <PdfHighlighter
+              onClick={(target, position) => { console.log(target, position); }}
               pdfDocument={pdfDocument}
               enableAreaSelection={(event) => event.altKey}
               onScrollChange={resetHash}
