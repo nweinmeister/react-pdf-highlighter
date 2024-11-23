@@ -100,7 +100,7 @@ export function MouseSelection({
     };
 
     const mouseDownHandler = (event: MouseEvent) => {
-      if (!shouldStart(event)) {
+      if (!shouldStart(event) && !onClick) {
         reset();
         return;
       }
