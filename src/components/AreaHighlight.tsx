@@ -5,7 +5,7 @@ import type { LTWHP, ViewportHighlight } from "../types";
 
 interface Props {
   highlight: ViewportHighlight;
-  onChange: (rect: LTWHP) => void;
+  onChange: (rect: LTWHP, event: any) => void;
   isScrolledTo: boolean;
 }
 
@@ -23,15 +23,15 @@ export function AreaHighlight({
     >
       <Rnd
         className={styles.part}
-        onDragStop={(_, data) => {
+        onDragStop={(event, data) => {
           const boundingRect: LTWHP = {
             ...highlight.position.boundingRect,
             top: data.y,
             left: data.x,
           };
-          onChange(boundingRect);
+          onChange(boundingRect, event);
         }}
-        onResizeStop={(_mouseEvent, _direction, ref, _delta, position) => {
+        onResizeStop={(mouseEvent, _direction, ref, _delta, position) => {
           const boundingRect: LTWHP = {
             top: position.y,
             left: position.x,
@@ -39,7 +39,7 @@ export function AreaHighlight({
             height: ref.offsetHeight,
             pageNumber: getPageFromElement(ref)?.number || -1,
           };
-          onChange(boundingRect);
+          onChange(boundingRect, mouseEvent);
         }}
         position={{
           x: highlight.position.boundingRect.left,
