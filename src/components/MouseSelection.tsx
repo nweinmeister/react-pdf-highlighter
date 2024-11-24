@@ -100,17 +100,18 @@ export function MouseSelection({
     };
 
     const mouseDownHandler = (event: MouseEvent) => {
-      if (!shouldStart(event) && !onClick) {
+      const startTarget = event.target as HTMLElement;
+      if(onClick) onClick(startTarget, containerCoords(event.pageX, event.pageY));
+
+      if (!shouldStart(event)) {
         reset();
         return;
       }
 
-      const startTarget = event.target as HTMLElement;
       if (!(startTarget instanceof Element) || !isHTMLElement(startTarget)) {
         return;
       }
 
-      if(onClick) onClick(startTarget, containerCoords(event.pageX, event.pageY));
       onDragStart();
       setStart(containerCoords(event.pageX, event.pageY));
       setEnd(null);
