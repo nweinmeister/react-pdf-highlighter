@@ -1,4 +1,4 @@
-import type { PDFDocumentProxy } from "pdfjs-dist";
+import { AnnotationMode, type PDFDocumentProxy } from "pdfjs-dist";
 import type { EventBus, PDFViewer } from "pdfjs-dist/legacy/web/pdf_viewer.mjs";
 import type { PDFViewerOptions } from "pdfjs-dist/types/web/pdf_viewer";
 import React, {
@@ -181,7 +181,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
         container: this.containerNodeRef.current,
         eventBus: eventBus,
         // enhanceTextSelection: true, // deprecated. https://github.com/mozilla/pdf.js/issues/9943#issuecomment-409369485
-        textLayerMode: 2,
+        textLayerMode: AnnotationMode.ENABLE,
         removePageBorders: true,
         linkService: linkService,
         ...pdfViewerOptions,
@@ -201,12 +201,12 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   findOrCreateHighlightLayer(page: number) {
     const { textLayer } = this.viewer.getPageView(page - 1) || {};
 
-    if (!textLayer) {
+    if (!textLayer || !textLayer.div.parentNode) {
       return null;
     }
 
     return findOrCreateContainerLayer(
-      textLayer.div,
+      textLayer.div.parentNode,
       `PdfHighlighter__highlight-layer ${styles.highlightLayer}`,
       ".PdfHighlighter__highlight-layer",
     );
