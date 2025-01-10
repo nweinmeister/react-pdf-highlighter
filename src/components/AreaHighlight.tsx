@@ -7,12 +7,14 @@ interface Props {
   highlight: ViewportHighlight;
   onChange: (rect: LTWHP, event: any) => void;
   isScrolledTo: boolean;
+  onDragStop: (event: any, data: any) => void;
 }
 
 export function AreaHighlight({
   highlight,
   onChange,
   isScrolledTo,
+  onDragStop,
   ...otherProps
 }: Props) {
   return (
@@ -30,6 +32,7 @@ export function AreaHighlight({
             left: data.x,
           };
           onChange(boundingRect, event);
+          onDragStop && onDragStop(event, data);
         }}
         onResizeStop={(mouseEvent, _direction, ref, _delta, position) => {
           const boundingRect: LTWHP = {
